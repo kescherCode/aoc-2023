@@ -1,12 +1,6 @@
-﻿var limitMap = new Dictionary<string, int>
-{
-    { "red", 12 },
-    { "green", 13 },
-    { "blue", 14 }
-};
-
+﻿var sum = 0;
+var lines = 0;
 var line = await Console.In.ReadLineAsync();
-var sum = 0;
 while (line != null)
 {
     var lineTask = Console.In.ReadLineAsync();
@@ -20,32 +14,35 @@ return;
 void ProcessLine()
 {
     ReadOnlySpan<char> lineSpan = line;
-    var endOfId = lineSpan.IndexOf(": ");
-    var id = int.Parse(lineSpan.Slice(5,endOfId - 5));
 
-    var data = lineSpan[(endOfId + 2)..];
-    var itemRanges = new Range[data.Count("; ") + 1];
-    data.Split(itemRanges, "; ");
+    var data = lineSpan[(lineSpan.IndexOf(':') + 2)..];
     var valid = true;
-    foreach (var itemRange in itemRanges)
+    do
     {
-        if (!valid) break;
-        var item = data[itemRange];
-        ReadOnlySpan<char> comma = ", ";
-        var countRanges = new Range[item.Count(comma) + 1];
-        item.Split(countRanges, comma);
-        foreach (var countRange in countRanges)
+        var space = data.IndexOf(' ');
+        var count = data[..space++];
+
+        if (count.Length < 2 || int.Parse(count) <= data[space] switch
+            {
+                'r' => 12,
+                'g' => 13,
+                'b' => 14,
+                _ => throw new InvalidDataException("Invalid color starting letter")
+            })
         {
-            var pair = item[countRange];
-            var endOfCount = pair.IndexOf(' ');
-
-            if (int.Parse(pair[..endOfCount]) <= limitMap[pair[++endOfCount..].ToString()]) continue;
-
+            var end = data.IndexOfAny(';', ',');
+            if (end != -1)
+                data = data[(end + 2)..];
+            else break;
+        }
+        else
+        {
             valid = false;
             break;
         }
-    }
+    } while (true);
 
     if (valid)
-        sum += id;
+        sum += ++lines;
+    else ++lines;
 }
