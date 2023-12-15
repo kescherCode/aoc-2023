@@ -7,7 +7,7 @@ internal static class Program
     private static readonly Range[] Parts = new Range[3];
     private static void Main()
     {
-        var seedLine = Console.ReadLine().AsSpan()[7..];
+        var seedLine = Console.ReadLine().AsSpan(7);
         for (var i = 0; i < seedLine.Length;)
         {
             var end = i + 1;
@@ -25,15 +25,15 @@ internal static class Program
                 continue;
             }
 
-            var memoryLine = line.AsSpan();
-            var partCount = memoryLine.Split(Parts, ' ');
+            var spanLine = line.AsSpan();
+            var partCount = spanLine.Split(Parts, ' ');
             if (partCount == 2)
                 _map = new List<(long, long, long)>();
             else
                 _map.Add((
-                    long.Parse(memoryLine[Parts[0]]),
-                    long.Parse(memoryLine[Parts[1]]),
-                    long.Parse(memoryLine[Parts[2]])
+                    long.Parse(spanLine[Parts[0]]),
+                    long.Parse(spanLine[Parts[1]]),
+                    long.Parse(spanLine[Parts[2]])
                 ));
         }
 
