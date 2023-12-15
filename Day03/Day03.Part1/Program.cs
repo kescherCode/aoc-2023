@@ -1,6 +1,6 @@
 ﻿using System.Buffers;
 
-namespace DayThree.PartOne;
+namespace Day03.Part1;
 
 internal static class Program
 {

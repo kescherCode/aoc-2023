@@ -1,4 +1,4 @@
-﻿namespace DayThree.PartTwo;
+﻿namespace Day03.Part2;
 
 internal static class Program
 {

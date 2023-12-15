@@ -1,6 +1,6 @@
 using System.Diagnostics.Contracts;
 
-namespace DayThree.PartOne;
+namespace Day03.Part1;
 
 public static class CharExtensions
 {
