@@ -17,14 +17,14 @@ void ProcessLine()
     var lineArr = line.AsSpan();
     foreach (var c in lineArr)
     {
-        if (!char.IsDigit(c))
+        if (!char.IsAsciiDigit(c))
             continue;
         firstDigit = c - '0';
     }
 
     for (var i = lineArr.Length - 1; i >= 0; i--)
     {
-        if (!char.IsDigit(lineArr[i])) continue;
+        if (!char.IsAsciiDigit(lineArr[i])) continue;
 
         sum += int.Parse($"{firstDigit}{lineArr[i] - '0'}");
         break;

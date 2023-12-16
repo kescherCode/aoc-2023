@@ -36,7 +36,7 @@ List<int> ParseLineDigits()
     while (!lineSpan.IsEmpty)
     {
         var c = lineSpan[0];
-        if (char.IsDigit(c))
+        if (char.IsAsciiDigit(c))
             digits.Add(c - '0');
         else
             foreach (var digitWord in digitMap.Keys)

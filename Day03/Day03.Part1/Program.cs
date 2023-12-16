@@ -64,7 +64,7 @@ internal static class Program
 
         for (; i < currentSpan.Length; i++)
         {
-            if (!char.IsDigit(currentSpan[i])) continue;
+            if (!char.IsAsciiDigit(currentSpan[i])) continue;
 
             var isNotAtStart = i > 0;
             var isPartNumber =
@@ -94,9 +94,9 @@ internal static class Program
 
             // Find the full part number
             var start = i;
-            while (start > 0 && char.IsDigit(currentSpan[start - 1])) start--;
+            while (start > 0 && char.IsAsciiDigit(currentSpan[start - 1])) start--;
             var end = i;
-            while (end < currentSpan.Length - 1 && char.IsDigit(currentSpan[end + 1])) end++;
+            while (end < currentSpan.Length - 1 && char.IsAsciiDigit(currentSpan[end + 1])) end++;
             _sum += int.Parse(currentSpan.Slice(start, end - start + 1));
 
             i = end;

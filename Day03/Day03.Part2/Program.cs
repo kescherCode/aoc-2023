@@ -37,19 +37,19 @@ internal static class Program
             var count = 0;
             bool topFound = false, bottomFound = false;
 
-            if (i > 0 && char.IsDigit(currentSpan[i - 1]))
+            if (i > 0 && char.IsAsciiDigit(currentSpan[i - 1]))
                 adjacentNumbers[count++] = FindPartNumber(currentSpan, i - 1);
-            if (i < currentSpan.Length - 1 && char.IsDigit(currentSpan[i + 1]))
+            if (i < currentSpan.Length - 1 && char.IsAsciiDigit(currentSpan[i + 1]))
                 adjacentNumbers[count++] = FindPartNumber(currentSpan, i + 1);
 
-            if (_previousLine != null && i < prevSpan.Length && char.IsDigit(prevSpan[i]))
+            if (_previousLine != null && i < prevSpan.Length && char.IsAsciiDigit(prevSpan[i]))
                 if (count != 2)
                 {
                     adjacentNumbers[count++] = FindPartNumber(prevSpan, i);
                     topFound = true;
                 }
                 else continue;
-            if (_nextLine != null && i < nextSpan.Length && char.IsDigit(nextSpan[i]))
+            if (_nextLine != null && i < nextSpan.Length && char.IsAsciiDigit(nextSpan[i]))
                 if (count != 2)
                 {
                     adjacentNumbers[count++] = FindPartNumber(nextSpan, i);
@@ -59,11 +59,11 @@ internal static class Program
 
             if (i > 0)
             {
-                if (!topFound && _previousLine != null && char.IsDigit(prevSpan[i - 1]))
+                if (!topFound && _previousLine != null && char.IsAsciiDigit(prevSpan[i - 1]))
                     if (count != 2)
                         adjacentNumbers[count++] = FindPartNumber(prevSpan, i - 1);
                     else continue;
-                if (!bottomFound && _nextLine != null && char.IsDigit(nextSpan[i - 1]))
+                if (!bottomFound && _nextLine != null && char.IsAsciiDigit(nextSpan[i - 1]))
                     if (count != 2)
                         adjacentNumbers[count++] = FindPartNumber(nextSpan, i - 1);
                     else continue;
@@ -71,11 +71,11 @@ internal static class Program
 
             if (i < currentSpan.Length - 1)
             {
-                if (!topFound && _previousLine != null && char.IsDigit(prevSpan[i + 1]))
+                if (!topFound && _previousLine != null && char.IsAsciiDigit(prevSpan[i + 1]))
                     if (count != 2)
                         adjacentNumbers[count++] = FindPartNumber(prevSpan, i + 1);
                     else continue;
-                if (!bottomFound && _nextLine != null && char.IsDigit(nextSpan[i + 1]))
+                if (!bottomFound && _nextLine != null && char.IsAsciiDigit(nextSpan[i + 1]))
                     if (count != 2)
                         adjacentNumbers[count++] = FindPartNumber(nextSpan, i + 1);
                     else continue;
@@ -87,11 +87,11 @@ internal static class Program
 
     private static int FindPartNumber(ReadOnlySpan<char> span, int index)
     {
-        while (index > 0 && char.IsDigit(span[index - 1]))
+        while (index > 0 && char.IsAsciiDigit(span[index - 1]))
             index--;
 
         var end = index;
-        while (end < span.Length - 1 && char.IsDigit(span[end + 1]))
+        while (end < span.Length - 1 && char.IsAsciiDigit(span[end + 1]))
             end++;
 
         return int.Parse(span.Slice(index, end - index + 1));
