@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using static Day07.Part1.HandType;
 
 namespace Day07.Part1;
 
@@ -12,51 +13,52 @@ internal static class Program
     {
         var hands = new SortedSet<Hand>(new HandComparer());
 
-        while (Console.ReadLine().AsMemory() is { IsEmpty: false } line)
+        while (Console.ReadLine().AsSpan() is { IsEmpty: false } line)
         {
             var (cards, type) = DetermineHandRank(line[..5]);
-            hands.Add(new(cards, ushort.Parse(line[6..].TrimEnd().Span), type));
+            hands.Add(new(cards, ushort.Parse(line[6..].TrimEnd()), type));
             Array.Clear(Count);
         }
 
         foreach (var (_, bid, _) in hands) _sum += bid * ++_rank;
+
         Console.WriteLine(_sum);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static (ReadOnlyMemory<sbyte> Cards, CardType Type) DetermineHandRank(ReadOnlyMemory<char> cards)
+    private static (ReadOnlyMemory<sbyte> Cards, HandType Type) DetermineHandRank(ReadOnlySpan<char> cards)
     {
-        var ranks = new sbyte[5];
-        for (var i = 0; i < cards.Span.Length; i++)
+        var cardRanks = new sbyte[5];
+        for (var i = 0; i < cards.Length; i++)
         {
-            var card = cards.Span[i];
+            var card = cards[i];
             sbyte index;
             switch (card)
             {
                 case 'A':
                     index = 12;
-                    ranks[i] = 13;
+                    cardRanks[i] = 13;
                     break;
                 case 'K':
                     index = 11;
-                    ranks[i] = 12;
+                    cardRanks[i] = 12;
                     break;
                 case 'Q':
                     index = 10;
-                    ranks[i] = 11;
+                    cardRanks[i] = 11;
                     break;
                 case 'J':
                     index = 9;
-                    ranks[i] = 10;
+                    cardRanks[i] = 10;
                     break;
                 case 'T':
                     index = 8;
-                    ranks[i] = 9;
+                    cardRanks[i] = 9;
                     break;
                 default:
                     index = (sbyte)(card - '2');
-                    ranks[i] = (sbyte)(index + 1);
+                    cardRanks[i] = (sbyte)(index + 1);
                     break;
             }
 
@@ -67,28 +69,28 @@ internal static class Program
         var tripleFound = false;
 
         foreach (var c in Count)
-        {
             switch (c)
             {
+                case 0 or 1:
+                    continue;
                 case 2:
                     if (pairFound)
-                        return (ranks, CardType.TwoPair);
+                        return (cardRanks, TwoPairs);
                     if (tripleFound)
-                        return (ranks, CardType.FullHouse);
+                        return (cardRanks, FullHouse);
                     pairFound = true;
                     break;
                 case 3:
                     if (pairFound)
-                        return (ranks, CardType.FullHouse);
+                        return (cardRanks, FullHouse);
                     tripleFound = true;
                     break;
                 case 4:
-                    return (ranks, CardType.FourOfAKind);
+                    return (cardRanks, FourOfAKind);
                 case 5:
-                    return (ranks, CardType.FiveOfAKind);
+                    return (cardRanks, FiveOfAKind);
             }
-        }
 
-        return (ranks, tripleFound ? CardType.ThreeOfAKind : pairFound ? CardType.OnePair : CardType.HighCard);
+        return (cardRanks, tripleFound ? ThreeOfAKind : pairFound ? OnePair : HighCard);
     }
 }

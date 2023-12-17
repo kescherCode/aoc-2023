@@ -1,10 +1,10 @@
-namespace Day07.Part1;
+namespace Day07.Part2;
 
-internal enum CardType : sbyte
+internal enum HandType : sbyte
 {
     HighCard,
     OnePair,
-    TwoPair,
+    TwoPairs,
     ThreeOfAKind,
     FullHouse,
     FourOfAKind,
