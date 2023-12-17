@@ -25,4 +25,5 @@ do
     iterations++;
 } while (currentLocation != goal);
 
+// steps
 Console.WriteLine(directionsLength * iterations);

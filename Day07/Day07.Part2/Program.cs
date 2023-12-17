@@ -15,20 +15,19 @@ internal static class Program
 
         while (Console.ReadLine().AsSpan() is { IsEmpty: false } line)
         {
-            var (cards, type, jokerCount) = DetermineHandRank(line[..5]);
-            hands.Add(new(line[..5].ToString(), cards, ushort.Parse(line[6..].TrimEnd()), type));
+            var (cards, type) = DetermineHandRank(line[..5]);
+            hands.Add(new(cards, ushort.Parse(line[6..].TrimEnd()), type));
             Array.Clear(Count);
         }
 
-        foreach (var (_, _, bid, _) in hands) _sum += bid * ++_rank;
+        foreach (var (_, bid, _) in hands) _sum += bid * ++_rank;
 
         Console.WriteLine(_sum);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static (ReadOnlyMemory<sbyte> Cards, HandType Type, sbyte JokerCount) DetermineHandRank(
-        ReadOnlySpan<char> cardSpan)
+    private static (ReadOnlyMemory<sbyte> Cards, HandType Type) DetermineHandRank(ReadOnlySpan<char> cardSpan)
     {
         var cardRanks = new sbyte[5];
         for (var i = 0; i < cardSpan.Length; i++)
@@ -81,11 +80,13 @@ internal static class Program
                         type = TwoPairs;
                         goto origTypeFound;
                     }
+
                     if (tripleFound)
                     {
                         type = FullHouse;
                         goto origTypeFound;
                     }
+
                     pairFound = true;
                     break;
                 case 3:
@@ -94,14 +95,15 @@ internal static class Program
                         type = FullHouse;
                         goto origTypeFound;
                     }
+
                     tripleFound = true;
                     break;
                 case 4:
-                type = FourOfAKind;
-                goto origTypeFound;
+                    type = FourOfAKind;
+                    goto origTypeFound;
                 case 5:
-                type = FiveOfAKind;
-                goto origTypeFound;
+                    type = FiveOfAKind;
+                    goto origTypeFound;
             }
 
         type = tripleFound ? ThreeOfAKind : pairFound ? OnePair : HighCard;
@@ -117,6 +119,6 @@ internal static class Program
                 _ => OnePair
             };
 
-        return (cardRanks, type, jokerCount);
+        return (cardRanks, type);
     }
 }
