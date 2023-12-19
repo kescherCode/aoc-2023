@@ -8,32 +8,31 @@ while (Console.ReadLine().AsMemory() is { IsEmpty: false } line)
         lines.Add(line);
 }
 
-
-var horizontalLength = lines.Count;
-var verticalLength = lines[0].Length;
+var rowCount = lines.Count;
+var colCount = lines[0].Length;
 List<List<char>> expandedGrid = [];
-for (var y = 0; y < verticalLength; y++)
+for (var x = 0; x < colCount; x++)
 {
-    var onlyDots = true;
-    for (var x = 0; x < horizontalLength; x++)
+    var empty = true;
+    for (var y = 0; y < rowCount; y++)
     {
-        var cell = lines[x].Span[y];
-        if (y != 0) expandedGrid[x].Add(cell);
+        var cell = lines[y].Span[x];
+        if (x != 0) expandedGrid[y].Add(cell);
         else expandedGrid.Add([cell]);
 
-        if (cell == '#') onlyDots = false;
+        if (cell == '#') empty = false;
     }
 
-    if (onlyDots)
-        for (var x = 0; x < lines.Count; x++)
-            expandedGrid[x].Add('.');
+    if (empty)
+        for (var y = 0; y < lines.Count; y++)
+            expandedGrid[y].Add('.');
 }
 
 List<(int X, int Y)> galaxyCoords = [];
-horizontalLength = expandedGrid.Count;
-verticalLength = expandedGrid[0].Count;
-for (var x = 0; x < horizontalLength; x++)
-for (var y = 0; y < verticalLength; y++)
+rowCount = expandedGrid.Count;
+colCount = expandedGrid[0].Count;
+for (var x = 0; x < rowCount; x++)
+for (var y = 0; y < colCount; y++)
     if (expandedGrid[x][y] == '#')
         galaxyCoords.Add((x, y));
 

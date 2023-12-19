@@ -1,0 +1,6 @@
+
+[*.cs]
+
+# ReSharper properties
+resharper_local_function_body = expression_body
+resharper_nested_ternary_style = compact
